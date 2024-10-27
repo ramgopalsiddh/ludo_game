@@ -5,6 +5,9 @@ import MenuIcon from '../assets/images/menu.png'
 import { deviceHeight, deviceWidth } from '../constants/Scaling';
 import Dice from '../components/Dice';
 import { Colors } from '../constants/Colors';
+import Pocket from '../components/Pocket';
+import VerticalPath from '../components/VerticalPath';
+import { Plot2Data } from '../helpers/PlotData';
 
 const LudoboardScreen = () => {
   return (
@@ -20,6 +23,11 @@ const LudoboardScreen = () => {
         </View>
 
         <View style={styles.ludoBoard}>
+          <View style={styles.plotContainer}>
+            <Pocket color={Colors.green} player={2} />
+            <VerticalPath cells={Plot2Data} color={Colors.yellow} />
+            <Pocket color={Colors.blue} player={3} />
+          </View>
             
         </View>
 
@@ -53,6 +61,13 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         padding: 10,
         backgroundColor: 'green',
+    },
+  plotContainer: {
+    width: '100%',
+    height: '40%',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    backgroundColor: '#ccc',
     },
     
 });

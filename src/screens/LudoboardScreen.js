@@ -19,8 +19,13 @@ const LudoboardScreen = () => {
             <Dice color={Colors.yellow}  rotate/>
         </View>
 
-        <View style={styles.ludoboard}>
+        <View style={styles.ludoBoard}>
+            
+        </View>
 
+        <View style={styles.flexRow}>
+            <Dice color={Colors.red} />
+            <Dice color={Colors.blue}  rotate/>
         </View>
 
       </View>
@@ -35,14 +40,20 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         height: deviceHeight * 0.5,
         width: deviceWidth,
-        backgroundColor: 'red',
     },
     flexRow: {
         justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
         paddingHorizontal: 30,
-    }
+    },
+    ludoBoard: {
+        width: '100%',
+        height: '100%',
+        alignSelf: 'center',
+        padding: 10,
+        backgroundColor: 'green',
+    },
     
 });
 

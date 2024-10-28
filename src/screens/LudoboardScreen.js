@@ -7,7 +7,8 @@ import Dice from '../components/Dice';
 import { Colors } from '../constants/Colors';
 import Pocket from '../components/Pocket';
 import VerticalPath from '../components/VerticalPath';
-import { Plot2Data } from '../helpers/PlotData';
+import { Plot1Data, Plot2Data, Plot3Data, Plot4Data } from '../helpers/PlotData';
+import HorizontalPath from '../components/HorizontalPath';
 
 const LudoboardScreen = () => {
   return (
@@ -26,9 +27,19 @@ const LudoboardScreen = () => {
           <View style={styles.plotContainer}>
             <Pocket color={Colors.green} player={2} />
             <VerticalPath cells={Plot2Data} color={Colors.yellow} />
-            <Pocket color={Colors.blue} player={3} />
+            <Pocket color={Colors.yellow} player={3} />
+          </View>
+
+          <View style={styles.pathContainer}>
+            <HorizontalPath cells={Plot1Data} color={Colors.green} />
+            <HorizontalPath cells={Plot3Data} color={Colors.blue} />
           </View>
             
+          <View style={styles.plotContainer}>
+            <Pocket color={Colors.red} player={1} />
+            <VerticalPath cells={Plot4Data} color={Colors.red} />
+            <Pocket color={Colors.blue} player={4} />
+          </View>
         </View>
 
         <View style={styles.flexRow}>
@@ -60,7 +71,7 @@ const styles = StyleSheet.create({
         height: '100%',
         alignSelf: 'center',
         padding: 10,
-        backgroundColor: 'green',
+        //backgroundColor: 'green',
     },
   plotContainer: {
     width: '100%',
@@ -68,7 +79,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     backgroundColor: '#ccc',
-    },
+  },
+  pathContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    height: '20%',
+    justifyContent: 'space-between',
+    backgroundColor: '#1E5162'
+  },
     
 });
 

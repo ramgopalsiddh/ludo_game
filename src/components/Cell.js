@@ -1,11 +1,19 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { Colors } from '../constants/Colors';
+import Pile from './Pile';
 
 const Cell = ({ color, id }) => {
     return (
         <View style={styles.container}>
-            <Text>{id}</Text>
+            <Text>{ id}</Text>
+            {/* <Pile
+                cell={true}
+                player={2}
+                onPress={() => {}}
+                pieceId={6}
+                color={Colors.green}
+            /> */}
         </View>
     )
 };

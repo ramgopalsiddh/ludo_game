@@ -4,7 +4,7 @@ import { BackgroundImage } from '../helpers/GetIcons'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
 import {Svg, Circle} from 'react-native-svg'
 
-const Pile = ({ color }) => {
+const Pile = ({ color, cell, player, onPress, pieceId }) => {
 
     const rotation = useRef(new Animated.Value(0)).current;
     

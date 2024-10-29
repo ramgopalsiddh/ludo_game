@@ -9,6 +9,7 @@ import Pocket from '../components/Pocket';
 import VerticalPath from '../components/VerticalPath';
 import { Plot1Data, Plot2Data, Plot3Data, Plot4Data } from '../helpers/PlotData';
 import HorizontalPath from '../components/HorizontalPath';
+import FourTriangles from '../components/FourTriangles';
 
 const LudoboardScreen = () => {
   return (
@@ -32,6 +33,7 @@ const LudoboardScreen = () => {
 
           <View style={styles.pathContainer}>
             <HorizontalPath cells={Plot1Data} color={Colors.green} />
+            <FourTriangles />
             <HorizontalPath cells={Plot3Data} color={Colors.blue} />
           </View>
             

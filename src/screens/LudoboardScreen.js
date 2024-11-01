@@ -36,16 +36,27 @@ const LudoboardScreen = () => {
         Animated.timing(opacity, {
           toValue: 0,
           duration: 500,
-          useNativeDriver:true
+          useNativeDriver: true
         }),
         Animated.timing(opacity, {
           toValue: 1,
           duration: 500,
-          useNativeDriver:true
+          useNativeDriver: true
         }),
       ]));
+
+      blinkAnimation.start()
+
+      const timeout = setTimeout(() => {
+        blinkAnimation.stop();
+        setShowStartImage(false);
+      }, 3000);
+      return () => {
+        blinkAnimation.stop();
+        clearTimeout(timeout);
+      }
     }
-  },[isFocused])
+  }, [isFocused]);
 
   return (
     <Wrapper>
@@ -55,8 +66,8 @@ const LudoboardScreen = () => {
 
       <View style={styles.container}>
         <View style={styles.flexRow}>
-            <Dice color={Colors.green} />
-            <Dice color={Colors.yellow}  rotate/>
+            <Dice color={Colors.green} player={2} data={player2} />
+            <Dice color={Colors.yellow}  rotate player={3} data={player3} />
         </View>
 
         <View style={styles.ludoBoard}>
@@ -80,16 +91,16 @@ const LudoboardScreen = () => {
         </View>
 
         <View style={styles.flexRow}>
-            <Dice color={Colors.red} />
-            <Dice color={Colors.blue}  rotate/>
+            <Dice color={Colors.red} player={1} data={player1} />
+            <Dice color={Colors.blue}  rotate player={4} data={player4} />
         </View>
 
       </View>
 
-      {!showStartImage && (
+      {showStartImage && (
         <Animated.Image
           source={StartGame}
-          style={{width:deviceWidth*0.5, height:deviceHeight*0.2, position:'absolute', opacity: 1 }}
+          style={{width:deviceWidth*0.5, height:deviceHeight*0.2, position:'absolute', opacity, }}
         />
       )}
     </Wrapper>

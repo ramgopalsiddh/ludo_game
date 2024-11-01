@@ -5,18 +5,26 @@ import { BackgroundImage } from '../helpers/GetIcons';
 import LottieView from 'lottie-react-native';
 import DiceRoll from '../assets/animation/diceroll.json';
 import Arrow from '../assets/images/arrow.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCurrentPlayerChance, selectDiceNo, selectDiceRolled } from '../redux/reducers/gameSelectors';
+import { resolver } from '../../metro.config';
+import { enableCellSelection, enablePileSelection, updateDiceNo, updatePlayerChance } from '../redux/reducers/gameSlice';
 
-const Dice = React.memo(({color, rotate, player, data}) => {
+const Dice = React.memo(({ color, rotate, player, data }) => {
+    const dispatch = useDispatch();
+    const currentPlayerChance = useSelector(selectCurrentPlayerChance);
+    const isDiceRolled = useSelector(selectDiceRolled);
+    const playerPices = useSelector(state => state.game[`player${currentPlayerChance}`],);
 
     // Import player icon and dice from helpers
-    const diceNo = 4;
+    const diceNo = useSelector(selectDiceNo);
     const pileIcon = BackgroundImage.GetImage(color);
     const diceIcon = BackgroundImage.GetImage(diceNo);
 
     const arrowAnim = useRef(new Animated.Value(0)).current;
 
     // Arrow animation 
-    const [DiceRolling, setDiceRolling] = useState(false);
+    const [diceRolling, setDiceRolling] = useState(false);
     useEffect(() => {
         const animateArrow = () =>{
             Animated.loop(
@@ -39,6 +47,49 @@ const Dice = React.memo(({color, rotate, player, data}) => {
         animateArrow();
     }, [])
 
+    // Promise for delay to show dice number
+    const delay = ms => new Promise(resolver => setTimeout(resolver, ms));
+
+    const handleDicePress = async () => {
+        const newDiceNo = Math.floor(Math.random() * 6) + 1;
+        setDiceRolling(true);
+        await delay(800);
+        dispatch(updateDiceNo({ diceNo: newDiceNo }));
+        setDiceRolling(false);
+
+        const isAnyPieceAlive = data?.findIndex(i => i.pos != 0 && i.pos != 57);
+        const isAnyPieceLocked = data?.findIndex(i => i.pos == 0);
+
+
+        if (isAnyPieceAlive == -1) {
+            if (newDiceNo == 6) {
+                dispatch(enablePileSelection({ playerNo: player }));
+            } else {
+                let chancePlayer = player + 1;
+                if (chancePlayer > 4) {
+                    chancePlayer = 1;
+                }
+                await delay(600)
+                dispatch(updatePlayerChance({ chancePlayer: chancePlayer }));
+            }
+        } else {
+            const canMove = playerPices.some(pile => pile.travelCount + newDiceNo <= 57 && pile.pos != 0,);
+            if ((!canMove && newDiceNo == 6 && isAnyPieceAlive == -1) || (!canMove && newDiceNo != 6 && isAnyPieceAlive != -1) || (!canMove && newDiceNo != 6 && isAnyPieceAlive == -1)) {
+                let chancePlayer = player + 1;
+                if (chancePlayer > 4) {
+                    chancePlayer = 1;
+                }
+                await delay(600)
+                dispatch(updatePlayerChance({ chancePlayer: chancePlayer }));
+                return;
+            }
+
+            if (newDiceNo == 6) {
+                enableCellSelection({ playerNo: player })
+                dispatch(enableCellSelection({playerNo:player}))
+            }
+        }
+    };
 
   return (
     <View style={[styles.flexRow, {transform: [{scaleX: rotate ? -1 : 1}]}]}>
@@ -63,23 +114,29 @@ const Dice = React.memo(({color, rotate, player, data}) => {
                 colors={['#aac8ab', '#aac8ab', '#aac8ab']}
                 start={{x: 0, y: 0.5}}
                 end={{x: 1, y: 0.5}}>
-                <View style={styles.diceContainer}>
-                    <TouchableOpacity>
-                        <Image source={diceIcon} style={styles.dice} />
-                    </TouchableOpacity>
+                  <View style={styles.diceContainer}>
+                    {currentPlayerChance === player && !diceRolling && (
+                          <TouchableOpacity
+                              disabled={isDiceRolled}
+                              activeOpacity={0.4}
+                              onPress={handleDicePress}
+                          >
+                            <Image source={diceIcon} style={styles.dice} />
+                        </TouchableOpacity>
+                    )}
                 </View>
             </LinearGradient>
         </View>
 
         {/* Show Arrow */}
-        {DiceRolling && (
+        {currentPlayerChance === player && !diceRolling && (
             <Animated.View style={{transform:[{translateX:arrowAnim}]}}>
                 <Image source={Arrow} style={{width: 50, height: 30}} />
             </Animated.View>
         )}
 
         {/* Show dice rotaion animation  */}
-        {DiceRolling && (
+        {currentPlayerChance === player && diceRolling && (
             <LottieView
                 source={DiceRoll}
                 style={styles.rollingDice}

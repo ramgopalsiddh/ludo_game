@@ -1,13 +1,27 @@
-import { View, Text, TouchableOpacity, StyleSheet, Image, Animated, Easing } from 'react-native'
-import React, { useEffect, useMemo, useRef } from 'react'
+import { View, TouchableOpacity, StyleSheet, Image, Animated, Easing } from 'react-native'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { BackgroundImage } from '../helpers/GetIcons'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
 import {Svg, Circle} from 'react-native-svg'
+import { useSelector } from 'react-redux'
+import { selectCellSelection, selectDiceNo, selectPocketPileSelection } from '../redux/reducers/gameSelectors'
 
 const Pile = ({ color, cell, player, onPress, pieceId }) => {
 
     const rotation = useRef(new Animated.Value(0)).current;
-    
+    const currentPlayerPileSelection = useSelector(selectPocketPileSelection);
+    const currentPlayerCellSelection = useSelector(selectCellSelection);
+    const diceNo = useSelector(selectDiceNo);
+    const playerPieces = useSelector(state => state.game[`player${player}`]);
+
+    isPileEnabled = useMemo(() => player === currentPlayerPileSelection, [player, currentPlayerPileSelection],);
+    isCellEnabled = useMemo(() => player === currentPlayerCellSelection, [player, currentPlayerCellSelection],);
+
+    const isForwardable = useCallback(() => { 
+        const piece = playerPieces?.find(item => item.id === pieceId)
+        return piece && piece.travelCount + diceNo <= 57;
+    }, [playerPieces, pieceId, diceNo]);
+
+
     const pileImage = BackgroundImage.GetImage(color)
 
     useEffect(() => {
@@ -34,25 +48,31 @@ const Pile = ({ color, cell, player, onPress, pieceId }) => {
     );
 
 
+
+
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} activeOpacity={0.5}
+            disabled={!(cell ? isCellEnabled && isForwardable() : isPileEnabled)}
+            onPress={onPress}>
             <View style={styles.hollowCircle}>
-                <View style={styles.dashedCircleContainer}>
-                    <Animated.View style={[styles.dashedCircle, { transform: [{ rotate: rotateInterpolate }] },]}>
-                            <Svg height='18' width='18'>
-                                <Circle
-                                    cx='9'
-                                    cy='9'
-                                    r='8'
-                                    stroke='white'
-                                    strokeWidth='2'
-                                    strokeDasharray='4 4'
-                                    strokeDashoffset='0'
-                                    fill='transparent'
-                                />
-                            </Svg>
-                    </Animated.View>
-                </View>
+                {(cell ? isCellEnabled && isForwardable() : isPileEnabled) && (
+                    <View style={styles.dashedCircleContainer}>
+                        <Animated.View style={[styles.dashedCircle, { transform: [{ rotate: rotateInterpolate }] },]}>
+                                <Svg height='18' width='18'>
+                                    <Circle
+                                        cx='9'
+                                        cy='9'
+                                        r='8'
+                                        stroke='white'
+                                        strokeWidth='2'
+                                        strokeDasharray='4 4'
+                                        strokeDashoffset='0'
+                                        fill='transparent'
+                                    />
+                                </Svg>
+                        </Animated.View>
+                    </View>
+                )}
             </View>
             <Image source={pileImage} style={{width:32, height:32, position:'absolute', top:-16}} />
       </TouchableOpacity>

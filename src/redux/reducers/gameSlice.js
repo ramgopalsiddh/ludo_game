@@ -38,9 +38,37 @@ export const gameSlice = createSlice({
             state.touchDiceBlock = false;
             state.isDiceRolled = false;
         },
+        updatePlayerPiceValue: (state, action) => {
+            const { playerNo, pieceId, pos, travelCount } = action.payload;
+            const playerPices = state[playerNo];
+            const piece = playerPices.find(p => p.id === pieceId);
+            state.pileSelectionPlayer = -1
+
+            if (piece) {
+                piece.pos = pos;
+                piece.travelCount = travelCount;
+                const currentPostionIndex = state.currentPositions.findIndex(p => p.id === pieceId);
+                
+                if (pos == 0) {
+                    if (currentPostionIndex !== -1) {
+                        state.currentPositions.splice(currentPostionIndex, 1)
+                    }
+                }else {
+                    if (currentPostionIndex !== -1) {
+                        state.currentPositions[currentPostionIndex] = {
+                            id: pieceId,
+                            pos
+                        };
+                    } else {
+                        state.currentPositions.push({ id: pieceId, pos });
+                    }
+                }
+
+            }
+        },
     },
 });
 
-export const { resetGame, updateDiceNo, announceWinner, updateFireworks, updatePlayerChance, unfreezeDice, disableTouch, enableCellSelection, enablePileSelection } = gameSlice.actions;
+export const { resetGame, updateDiceNo, announceWinner, updateFireworks, updatePlayerChance, unfreezeDice, disableTouch, enableCellSelection, enablePileSelection, updatePlayerPiceValue } = gameSlice.actions;
 
 export default gameSlice.reducer;

@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentPlayerChance, selectDiceNo, selectDiceRolled } from '../redux/reducers/gameSelectors';
 import { resolver } from '../../metro.config';
 import { enableCellSelection, enablePileSelection, updateDiceNo, updatePlayerChance } from '../redux/reducers/gameSlice';
+import { playSound } from '../helpers/SoundUtility';
 
 const Dice = React.memo(({ color, rotate, player, data }) => {
     const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const Dice = React.memo(({ color, rotate, player, data }) => {
 
     const handleDicePress = async () => {
         const newDiceNo = Math.floor(Math.random() * 6) + 1;
+        playSound('dice_roll');
         setDiceRolling(true);
         await delay(800);
         dispatch(updateDiceNo({ diceNo: newDiceNo }));
@@ -74,7 +76,10 @@ const Dice = React.memo(({ color, rotate, player, data }) => {
             }
         } else {
             const canMove = playerPices.some(pile => pile.travelCount + newDiceNo <= 57 && pile.pos != 0,);
-            if ((!canMove && newDiceNo == 6 && isAnyPieceAlive == -1) || (!canMove && newDiceNo != 6 && isAnyPieceAlive != -1) || (!canMove && newDiceNo != 6 && isAnyPieceAlive == -1)) {
+            if ((!canMove && newDiceNo == 6 && isAnyPieceAlive == -1) ||
+                (!canMove && newDiceNo != 6 && isAnyPieceAlive != -1) ||
+                (!canMove && newDiceNo != 6 && isAnyPieceAlive == -1)
+            ) {
                 let chancePlayer = player + 1;
                 if (chancePlayer > 4) {
                     chancePlayer = 1;
@@ -129,7 +134,7 @@ const Dice = React.memo(({ color, rotate, player, data }) => {
         </View>
 
         {/* Show Arrow */}
-        {currentPlayerChance === player && !diceRolling && (
+        {currentPlayerChance === player && !isDiceRolled && (
             <Animated.View style={{transform:[{translateX:arrowAnim}]}}>
                 <Image source={Arrow} style={{width: 50, height: 30}} />
             </Animated.View>

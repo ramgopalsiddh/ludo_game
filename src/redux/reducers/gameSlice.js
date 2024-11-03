@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { intiialState } from './initialState';
+import { initialState } from './initialState';
 
 export const gameSlice = createSlice({
     name: 'game',
-    initialState: intiialState,
+    initialState: initialState,
     reducers: {
-        resetGame: () => intiialState,
+        resetGame: () => initialState,
         updateDiceNo: (state, action) => {
             state.diceNo = action.payload.diceNo;
             state.isDiceRolled = true;

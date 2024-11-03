@@ -23,7 +23,7 @@ const player4InitialState = [
     { id: 'D4', pos: 0, travelCount: 0 },
 ]
 
-export const intiialState = {
+export const initialState = {
     player1: player1InitialState,
     player2: player2InitialState,
     player3: player3InitialState,

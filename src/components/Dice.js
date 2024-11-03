@@ -90,9 +90,9 @@ const Dice = React.memo(({ color, rotate, player, data }) => {
             }
 
             if (newDiceNo == 6) {
-                enableCellSelection({ playerNo: player })
-                dispatch(enableCellSelection({playerNo:player}))
+                dispatch(enablePileSelection({ playerNo: player }));
             }
+            dispatch(enableCellSelection({ playerNo: player }));
         }
     };
 

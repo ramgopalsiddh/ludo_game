@@ -41,8 +41,8 @@ const FourTriangles = ({player1, player2, player3, player4}) => {
         },
         {
             player: player3,
-            top: 52,
-            left: 15,
+            bottom: 50,
+            right: 15,
             pieceColor: Colors.yellow,
             translate: 'translateX',
         },
@@ -58,7 +58,7 @@ const FourTriangles = ({player1, player2, player3, player4}) => {
             top: 20,
             right: -2,
             pieceColor: Colors.blue,
-            translate: 'translateX',
+            translate: 'translateY',
         },
     ], [player1, player2, player3, player4],);
 

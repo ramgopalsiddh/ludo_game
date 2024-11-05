@@ -109,7 +109,7 @@ export const handleForwardThunk = (playerNo, id, pos) => async (dispatch, getSta
         dispatch(updatePlayerChance({ chancePlayer: playerNo }))
         if (travelCount == 57) {
             //Check winning criteria
-            playSound('homw_win')
+            playSound('home_win')
             const finalPlayerState = getState()
             const playerAllPieces = finalPlayerState.game[`player${playerNo}`];
             if (checkWinningCriteria(playerAllPieces)) {

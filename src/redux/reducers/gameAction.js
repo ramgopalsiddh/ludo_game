@@ -1,7 +1,7 @@
 import { SafeSpots, StarSpots, startingPoints, turningPoints, victoryStart } from "../../helpers/PlotData";
 import { playSound } from "../../helpers/SoundUtility";
 import { selectCurrentPostions, selectDiceNo } from "./gameSelectors"
-import { disableTouch, unfreezeDice, updatePlayerPiceValue } from "./gameSlice";
+import { announceWinner, disableTouch, unfreezeDice, updateFireworks, updatePlayerChance, updatePlayerPiceValue } from "./gameSlice";
 
   // Promise for delay to show dice number
 const delay = ms => new Promise(resolver => setTimeout(resolver, ms));
@@ -45,7 +45,6 @@ export const handleForwardThunk = (playerNo, id, pos) => async (dispatch, getSta
             pieceId: playerPiece.id,
             pos: path,
             travelCount: travelCount,
-
             
         }),
         );
@@ -66,7 +65,7 @@ export const handleForwardThunk = (playerNo, id, pos) => async (dispatch, getSta
     const areDifferentIds = uniqueIds.size > 1
 
     if (SafeSpots.includes(finalPath) || StarSpots.includes(finalPath)) {
-        playSound('safe_spot')
+        playSound('safe_spot');
     }
 
     if (areDifferentIds && !SafeSpots.includes(finalPlot[0].pos) && !StarSpots.includes(finalPlot[0].pos)) {
@@ -106,5 +105,35 @@ export const handleForwardThunk = (playerNo, id, pos) => async (dispatch, getSta
     }
 
 
-
+    if (diceNo == 6 || travelCount == 57) {
+        dispatch(updatePlayerChance({ chancePlayer: playerNo }))
+        if (travelCount == 57) {
+            //Check winning criteria
+            playSound('homw_win')
+            const finalPlayerState = getState()
+            const playerAllPieces = finalPlayerState.game[`player${playerNo}`];
+            if (checkWinningCriteria(playerAllPieces)) {
+                dispatch(announceWinner(playerNo))
+                playSound('cheer')
+                return
+            }
+            dispatch(updateFireworks(true))
+        }
+    } else {
+        let chancePlayer = playerNo + 1;
+        if (chancePlayer > 4) {
+            chancePlayer=1
+        }
+        dispatch(updatePlayerChance({ chancePlayer }));
+    }
 };
+
+
+function checkWinningCriteria(pieces) {
+    for (let piece of pieces) {
+        if (piece.travelCount < 57) {
+            return false;
+        }
+    }
+    return true;
+}

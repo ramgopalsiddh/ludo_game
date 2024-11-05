@@ -7,6 +7,7 @@ import { ArrowRightIcon, StarIcon } from 'react-native-heroicons/outline'
 import { RFValue } from 'react-native-responsive-fontsize'
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentPostions } from '../redux/reducers/gameSelectors';
+import { handleForwardThunk } from '../redux/reducers/gameAction';
 
 const Cell = ({ color, id }) => {
 

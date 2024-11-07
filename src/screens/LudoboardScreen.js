@@ -1,5 +1,5 @@
 import { View, Text, Touchable, TouchableOpacity, Image, StyleSheet, useAnimatedValue, Animated } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Wrapper from '../components/Wrapper'
 import MenuIcon from '../assets/images/menu.png'
 import { deviceHeight, deviceWidth } from '../constants/Scaling';
@@ -14,6 +14,8 @@ import { useSelector } from 'react-redux';
 import { selectDiceTouch, selectPlayer1, selectPlayer2, selectPlayer3, selectPlayer4 } from '../redux/reducers/gameSelectors';
 import { useIsFocused } from '@react-navigation/native';
 import StartGame from '../assets/images/start.png'
+import MenuModal from '../components/MenuModal';
+import { playSound } from '../helpers/SoundUtility';
 
 const LudoboardScreen = () => {
 
@@ -58,9 +60,14 @@ const LudoboardScreen = () => {
     }
   }, [isFocused]);
 
+  const handleMenuPress = useCallback(() => {
+    playSound('ui');
+    setMenuVisible(true);
+  }, [])
+
   return (
     <Wrapper>
-      <TouchableOpacity style={{position: 'absolute', top: 60, left: 20}}>
+      <TouchableOpacity onPress={handleMenuPress} style={{position: 'absolute', top: 60, left: 20}}>
         <Image source={MenuIcon} style={{width:30, height:30}} />
       </TouchableOpacity>
 
@@ -108,6 +115,7 @@ const LudoboardScreen = () => {
           style={{width:deviceWidth*0.5, height:deviceHeight*0.2, position:'absolute', opacity, }}
         />
       )}
+      {menuVisible && <MenuModal onPresHide={() => setMenuVisible(false)} visible={menuVisible} />}
     </Wrapper>
   );
 };

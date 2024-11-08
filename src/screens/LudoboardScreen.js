@@ -16,6 +16,7 @@ import { useIsFocused } from '@react-navigation/native';
 import StartGame from '../assets/images/start.png'
 import MenuModal from '../components/MenuModal';
 import { playSound } from '../helpers/SoundUtility';
+import WinModal from '../components/WinModal';
 
 const LudoboardScreen = () => {
 
@@ -116,6 +117,8 @@ const LudoboardScreen = () => {
         />
       )}
       {menuVisible && <MenuModal onPresHide={() => setMenuVisible(false)} visible={menuVisible} />}
+      
+      {winner !=null && <WinModal winner={winner} /> }
     </Wrapper>
   );
 };

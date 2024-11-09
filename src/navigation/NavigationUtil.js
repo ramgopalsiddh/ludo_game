@@ -13,7 +13,7 @@ export async function navigate(routeName, params) {
 export async function resetAndnavigate(routeName) {
     navigationRef.isReady();
     if (navigationRef.isReady()) {
-        navigationRef.dispatch(CommonActions.resetAndnavigate({
+        navigationRef.dispatch(CommonActions.reset({
             index: 0,
             routes: [{name: routeName}],
         }),

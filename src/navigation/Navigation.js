@@ -11,18 +11,18 @@ function Navigation() {
     return (
         <NavigationContainer ref={navigationRef}>
             <Stack.Navigator
-                initialRouteName="LudoBoardScreen"
+                initialRouteName="SplashScreen"
                 screenOptions={() => ({
                 headerShown: false,
             })}>
                 <Stack.Screen name="LudoBoardScreen" options={{
-                    animation: 'fade'
+                    animation: 'fade',
                 }} component={LudoboardScreen} />
                 <Stack.Screen name="HomeScreen" options={{
-                    animation: 'fade'
+                    animation: 'fade',
                 }} component={HomeScreen} />
                 <Stack.Screen name="SplashScreen" options={{
-                    animation: 'fade'
+                    animation: 'fade',
                 }} component={SplashScreen} />
             </Stack.Navigator>
         </NavigationContainer>

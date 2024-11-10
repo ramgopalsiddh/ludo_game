@@ -13,6 +13,8 @@ import { resetGame } from '../redux/reducers/gameSlice';
 import { navigate } from '../navigation/NavigationUtil';
 import LottieView from 'lottie-react-native';
 import Witch from '../assets/animation/witch.json';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Linking } from 'react-native';
 
 
 const HomeScreen = () => {
@@ -120,6 +122,11 @@ const HomeScreen = () => {
     return cleanupAnimation;
   },[witchAnim, scaleXAnim])
 
+  // function for open link
+  const openLink = (url) => {
+    Linking.openURL(url);
+  }
+
   return (
     <Wrapper style={{justifyContent: 'flex-start'}}>
       <Animated.View style={styles.imgContainer}>
@@ -150,6 +157,21 @@ const HomeScreen = () => {
         </Pressable>
       </Animated.View>
 
+      {/* Social media icons at the bottom */}
+      <View style={styles.socialLinks}>
+        <Pressable onPress={() => openLink('https://twitter.com/ramgopalsiddh1')} style={styles.iconWrapper}>
+          <FontAwesome name="twitter" size={50} color="#1DA1F2" />
+        </Pressable>
+        <Pressable onPress={() => openLink('https://www.linkedin.com/in/ramgopalsiddh')} style={styles.iconWrapper}>
+          <FontAwesome name="linkedin" size={50} color="#0077B5" />
+        </Pressable>
+        <Pressable onPress={() => openLink('https://github.com/ramgopalsiddh')} style={styles.iconWrapper}>
+          <FontAwesome name="github" size={50} color="#333" />
+        </Pressable>
+        <Pressable onPress={() => openLink('https://ramgopal.dev')} style={styles.iconWrapper}>
+          <FontAwesome name="user" size={50} color="#000" />
+        </Pressable>
+      </View>
       <Text style={styles.artist}>Made By - RAM GOPAL SIDDH</Text>
     </Wrapper>
   )
@@ -176,6 +198,7 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     opacity: 0.8,
     fontStyle: 'italic',
+    fontSize: 19,
   },
   witchContainer: {
     position: 'absolute',
@@ -183,9 +206,24 @@ const styles = StyleSheet.create({
     left: '24%',
   },
   witch: {
-    height: 250,
+    height: 300,
     width: 250,
     transform: [{rotate: '25deg'}],
+  },
+  socialLinks: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '95%',
+    position: 'absolute',
+    bottom: 110,
+  },
+  iconWrapper: {
+    borderWidth: 3,
+    borderColor: 'gold',
+    borderRadius: 20,
+    padding: 8, 
+    backgroundColor: 'white',
   },
 });
 

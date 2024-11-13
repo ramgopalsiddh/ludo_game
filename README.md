@@ -3,7 +3,17 @@
 
 
 # Screenshots
-<img src="screenshots/IMG_20241018_173058.jpg">
+<img src="screenshots/ludo_game1.jpg">
+<img src="screenshots/ludo_game2.jpg">
+<img src="screenshots/ludo_game3.jpg">
+<img src="screenshots/ludo_game4.jpg">
+<img src="screenshots/ludo_game5.jpg">
+<img src="screenshots/ludo_game6.jpg">
+<img src="screenshots/ludo_game7.jpg">
+<img src="screenshots/ludo_game8.jpg">
+<img src="screenshots/ludo_game9.jpg">
+<img src="screenshots/ludo_game10.jpg">
+
 
 
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).

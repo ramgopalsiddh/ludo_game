@@ -42,7 +42,8 @@ export const gameSlice = createSlice({
             const { playerNo, pieceId, pos, travelCount } = action.payload;
             const playerPices = state[playerNo];
             const piece = playerPices.find(p => p.id === pieceId);
-            state.pileSelectionPlayer = -1
+            state.pileSelectionPlayer = -1;
+            state.cellSelectionPlayer = -1;
 
             if (piece) {
                 piece.pos = pos;

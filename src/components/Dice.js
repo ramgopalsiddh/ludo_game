@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectCurrentPlayerChance, selectDiceNo, selectDiceRolled } from '../redux/reducers/gameSelectors';
 import { resolver } from '../../metro.config';
 import { enableCellSelection, enablePileSelection, updateDiceNo, updatePlayerChance } from '../redux/reducers/gameSlice';
+import { handleForwardThunk } from '../redux/reducers/gameAction';
 import { playSound } from '../helpers/SoundUtility';
 
 const Dice = React.memo(({ color, rotate, player, data }) => {
@@ -59,40 +60,60 @@ const Dice = React.memo(({ color, rotate, player, data }) => {
         dispatch(updateDiceNo({ diceNo: newDiceNo }));
         setDiceRolling(false);
 
-        const isAnyPieceAlive = data?.findIndex(i => i.pos != 0 && i.pos != 57);
-        const isAnyPieceLocked = data?.findIndex(i => i.pos == 0);
+        if (newDiceNo === 6) {
+            const canOpenPiece = playerPices.some(p => p.pos === 0);
+            const canMovePiece = playerPices.some(p => p.pos !== 0 && p.travelCount + newDiceNo <= 57);
 
-
-        if (isAnyPieceAlive == -1) {
-            if (newDiceNo == 6) {
-                dispatch(enablePileSelection({ playerNo: player }));
+            if (canOpenPiece || canMovePiece) {
+                // A valid move is possible, so give the player the choice.
+                if (canOpenPiece) {
+                    dispatch(enablePileSelection({ playerNo: player }));
+                }
+                if (canMovePiece) {
+                    dispatch(enableCellSelection({ playerNo: player }));
+                }
             } else {
+                // No valid move is possible with a 6, so pass the turn.
                 let chancePlayer = player + 1;
                 if (chancePlayer > 4) {
                     chancePlayer = 1;
                 }
-                await delay(600)
+                await delay(600);
                 dispatch(updatePlayerChance({ chancePlayer: chancePlayer }));
             }
         } else {
-            const canMove = playerPices.some(pile => pile.travelCount + newDiceNo <= 57 && pile.pos != 0,);
-            if ((!canMove && newDiceNo == 6 && isAnyPieceAlive == -1) ||
-                (!canMove && newDiceNo != 6 && isAnyPieceAlive != -1) ||
-                (!canMove && newDiceNo != 6 && isAnyPieceAlive == -1)
-            ) {
+            const openPiles = playerPices.filter(pile => pile.pos !== 0 && pile.travelCount < 57);
+
+            if (openPiles.length === 0) {
+                // No pieces on board, pass turn
                 let chancePlayer = player + 1;
                 if (chancePlayer > 4) {
                     chancePlayer = 1;
                 }
-                await delay(600)
+                await delay(600);
                 dispatch(updatePlayerChance({ chancePlayer: chancePlayer }));
-                return;
-            }
+            } else {
+                // Find which of the open piles can actually move
+                const movablePiles = openPiles.filter(
+                    pile => pile.travelCount + newDiceNo <= 57,
+                );
 
-            if (newDiceNo == 6) {
-                dispatch(enablePileSelection({ playerNo: player }));
+                if (movablePiles.length === 1) {
+                    // Exactly one piece can move, so move it automatically
+                    dispatch(handleForwardThunk(player, movablePiles[0].id, movablePiles[0].pos));
+                } else if (movablePiles.length > 1) {
+                    // More than one piece can move, let the user choose
+                    dispatch(enableCellSelection({ playerNo: player }));
+                } else {
+                    // No pieces can move (all are blocked), pass the turn
+                    let chancePlayer = player + 1;
+                    if (chancePlayer > 4) {
+                        chancePlayer = 1;
+                    }
+                    await delay(600);
+                    dispatch(updatePlayerChance({ chancePlayer: chancePlayer }));
+                }
             }
-            dispatch(enableCellSelection({ playerNo: player }));
         }
     };
 

@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LudoboardScreen from "../screens/LudoboardScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SplashScreen from "../screens/SplashScreen";
+import PlayerNameScreen from "../screens/PlayerNameScreen";
 import { navigationRef } from "./NavigationUtil";
 
 const Stack = createNativeStackNavigator();
@@ -24,6 +25,9 @@ function Navigation() {
                 <Stack.Screen name="SplashScreen" options={{
                     animation: 'fade',
                 }} component={SplashScreen} />
+                <Stack.Screen name="PlayerNameScreen" options={{
+                    animation: 'fade',
+                }} component={PlayerNameScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     )

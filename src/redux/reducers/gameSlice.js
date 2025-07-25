@@ -67,9 +67,12 @@ export const gameSlice = createSlice({
 
             }
         },
+        updatePlayerNames: (state, action) => {
+            state.playerNames = action.payload;
+        },
     },
 });
 
-export const { resetGame, updateDiceNo, announceWinner, updateFireworks, updatePlayerChance, unfreezeDice, disableTouch, enableCellSelection, enablePileSelection, updatePlayerPiceValue } = gameSlice.actions;
+export const { resetGame, updateDiceNo, announceWinner, updateFireworks, updatePlayerChance, unfreezeDice, disableTouch, enableCellSelection, enablePileSelection, updatePlayerPiceValue, updatePlayerNames } = gameSlice.actions;
 
 export default gameSlice.reducer;

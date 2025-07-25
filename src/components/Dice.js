@@ -17,6 +17,7 @@ const Dice = React.memo(({ color, rotate, player, data }) => {
     const currentPlayerChance = useSelector(selectCurrentPlayerChance);
     const isDiceRolled = useSelector(selectDiceRolled);
     const playerPices = useSelector(state => state.game[`player${currentPlayerChance}`],);
+    const playerNames = useSelector(state => state.game.playerNames);
 
     // Import player icon and dice from helpers
     const diceNo = useSelector(selectDiceNo);
@@ -202,6 +203,13 @@ const styles = StyleSheet.create({
     },
     pileContainer: {
         paddingHorizontal: 3,
+        alignItems: 'center',
+    },
+    playerName: {
+        color: 'white',
+        fontWeight: 'bold',
+        marginTop: 5,
+        alignItems: 'center',
     },
     diceContainer: {
         backgroundColor: '#e8c0c1',

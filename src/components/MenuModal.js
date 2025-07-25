@@ -5,7 +5,7 @@ import GradientButton from "./GradientButton";
 import { useDispatch } from "react-redux";
 import { announceWinner, resetGame } from "../redux/reducers/gameSlice";
 import { playSound } from "../helpers/SoundUtility";
-import { goBack } from "../navigation/NavigationUtil";
+import { goBack, resetAndnavigate } from "../navigation/NavigationUtil";
 import LinearGradient from "react-native-linear-gradient";
 
 const MenuModal = ({ visible, onPresHide }) => {
@@ -17,6 +17,7 @@ const MenuModal = ({ visible, onPresHide }) => {
         playSound('game_start');
         dispatch(announceWinner(null));
         onPresHide();
+        resetAndnavigate('PlayerNameScreen');
     }, [dispatch, onPresHide]);
 
     const handleHome = useCallback(() => {

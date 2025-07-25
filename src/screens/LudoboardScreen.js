@@ -25,6 +25,7 @@ const LudoboardScreen = () => {
   const player3 = useSelector(selectPlayer3);
   const player4 = useSelector(selectPlayer4);
   const isDiceTouch = useSelector(selectDiceTouch);
+  const playerNames = useSelector(state => state.game.playerNames);
   const winner = useSelector(state => state.game.winner);
   const isFocused = useIsFocused();
 
@@ -74,8 +75,14 @@ const LudoboardScreen = () => {
 
       <View style={styles.container}>
         <View style={styles.flexRow} pointerEvents={isDiceTouch ? 'none' : 'auto' }>
-            <Dice color={Colors.green} player={2} data={player2} />
-            <Dice color={Colors.yellow}  rotate player={3} data={player3} />
+            <View style={styles.diceAndNameContainer}>
+              <Dice color={Colors.green} player={2} data={player2} />
+              <Text style={styles.playerName}>{playerNames[1]}</Text>
+            </View>
+            <View style={styles.diceAndNameContainer}>
+              <Dice color={Colors.yellow}  rotate player={3} data={player3} />
+              <Text style={styles.playerName}>{playerNames[2]}</Text>
+            </View>
         </View>
 
         <View style={styles.ludoBoard}>
@@ -104,8 +111,14 @@ const LudoboardScreen = () => {
         </View>
 
         <View style={styles.flexRow} pointerEvents={isDiceTouch ? 'none' : 'auto' }>
-            <Dice color={Colors.red} player={1} data={player1} />
-            <Dice color={Colors.blue}  rotate player={4} data={player4} />
+            <View style={styles.diceAndNameContainer}>
+              <Dice color={Colors.red} player={1} data={player1} />
+              <Text style={styles.playerName}>{playerNames[0]}</Text>
+            </View>
+            <View style={styles.diceAndNameContainer}>
+              <Dice color={Colors.blue}  rotate player={4} data={player4} />
+              <Text style={styles.playerName}>{playerNames[3]}</Text>
+            </View>
         </View>
 
       </View>
@@ -125,6 +138,14 @@ const LudoboardScreen = () => {
 
 
 const styles = StyleSheet.create({
+    diceAndNameContainer: {
+        alignItems: 'center',
+    },
+    playerName: {
+        color: 'white',
+        fontWeight: 'bold',
+        marginTop: 5,
+    },
     container: {
         justifyContent: 'center',
         alignSelf: 'center',

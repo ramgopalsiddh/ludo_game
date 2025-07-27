@@ -44,7 +44,10 @@ const HomeScreen = () => {
     playSound('game_start')
   }
 
-  const handleNewGamePress = useCallback(()=>{ startGame(true) },[])
+  const handleNewGamePress = useCallback(() => {
+    dispatch(resetGame());
+    navigate('PlayerNameScreen');
+  }, [dispatch]);
 
   const handleResumePress = useCallback(() => { startGame() }, [])
 

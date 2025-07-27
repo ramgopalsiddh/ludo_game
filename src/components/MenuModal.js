@@ -21,7 +21,8 @@ const MenuModal = ({ visible, onPresHide }) => {
     }, [dispatch, onPresHide]);
 
     const handleHome = useCallback(() => {
-        goBack();
+        onPresHide();
+        resetAndnavigate('HomeScreen');
     }, []);
 
     return (

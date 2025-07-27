@@ -37,4 +37,5 @@ export const initialState = {
     currentPositions: [],
     fireworks: false,
     winner: null,
+    playerNames: ['', '', '', ''],
 };

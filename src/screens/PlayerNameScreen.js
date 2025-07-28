@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { updatePlayerNames } from '../redux/reducers/gameSlice';
 import Wrapper from '../components/Wrapper';
 import { Colors } from '../constants/Colors';
+import { BackgroundImage } from '../helpers/GetIcons';
+import Back from '../assets/images/arrow.png';
+import GradientButton from '../components/GradientButton';
 
 const PlayerNameScreen = () => {
+    const handleHome = () => {
+        navigation.navigate('HomeScreen');
+    };
     const [player1, setPlayer1] = useState('');
     const [player2, setPlayer2] = useState('');
     const [player3, setPlayer3] = useState('');
@@ -19,36 +25,32 @@ const PlayerNameScreen = () => {
         navigation.navigate('LudoBoardScreen');
     };
 
+    const renderInput = (player, setPlayer, color, placeholder) => (
+        <View style={styles.inputContainer}>
+            <Image source={BackgroundImage.GetImage(color)} style={styles.pileIcon} />
+            <TextInput
+                style={styles.input}
+                placeholder={placeholder}
+                placeholderTextColor={Colors.blue}
+                value={player}
+                onChangeText={setPlayer}
+            />
+        </View>
+    );
+
     return (
         <Wrapper>
             <View style={styles.container}>
                 <Text style={styles.title}>Enter Player Names</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Player 1 Name"
-                    value={player1}
-                    onChangeText={setPlayer1}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Player 2 Name"
-                    value={player2}
-                    onChangeText={setPlayer2}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Player 3 Name"
-                    value={player3}
-                    onChangeText={setPlayer3}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Player 4 Name"
-                    value={player4}
-                    onChangeText={setPlayer4}
-                />
+                {renderInput(player1, setPlayer1, Colors.red, 'Player 1 Name')}
+                {renderInput(player2, setPlayer2, Colors.green, 'Player 2 Name')}
+                {renderInput(player3, setPlayer3, Colors.yellow, 'Player 3 Name')}
+                {renderInput(player4, setPlayer4, Colors.blue, 'Player 4 Name')}
                 <TouchableOpacity style={styles.button} onPress={handleStartGame}>
                     <Text style={styles.buttonText}>Start Game</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={handleHome}>
+                    <Text style={styles.buttonText}>HOME</Text>
                 </TouchableOpacity>
             </View>
         </Wrapper>
@@ -60,33 +62,49 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: '10%',
-        backgroundColor: '#f0f0f0',
-        marginTop: '20%',
-        marginBottom: '20%',
+        padding: 20,
+        width: '90%',
         borderRadius: 20,
     },
     title: {
-        fontSize: 24,
+        fontSize: 32,
         fontWeight: 'bold',
-        marginBottom: 20,
         color: Colors.red,
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 10,
+        marginBottom: 20,
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+        marginBottom: 15,
+    },
+    pileIcon: {
+        width: 40,
+        height: 40,
+        marginRight: 10,
     },
     input: {
-        width: '80%',
+        flex: 1,
         height: 50,
         borderColor: Colors.blue,
         borderWidth: 1,
         borderRadius: 10,
-        marginBottom: 15,
         paddingHorizontal: 15,
         fontSize: 16,
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        color: Colors.blue
     },
     button: {
         backgroundColor: Colors.green,
         paddingVertical: 15,
         paddingHorizontal: 30,
         borderRadius: 10,
+        width: '70%',
+        alignItems: 'center',
+        marginTop: 20,
     },
     buttonText: {
         color: 'white',

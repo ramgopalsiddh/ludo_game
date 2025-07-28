@@ -5,8 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import { updatePlayerNames } from '../redux/reducers/gameSlice';
 import Wrapper from '../components/Wrapper';
 import { Colors } from '../constants/Colors';
-import { BackgroundImage } from '../helpers/GetIcons';
-import Back from '../assets/images/arrow.png';
 
 const PlayerNameScreen = () => {
     const [player1, setPlayer1] = useState('');
@@ -38,10 +36,30 @@ const PlayerNameScreen = () => {
         <Wrapper>
             <View style={styles.container}>
                 <Text style={styles.title}>Enter Player Names</Text>
-                {renderInput(player1, setPlayer1, Colors.red, 'Player 1 Name')}
-                {renderInput(player2, setPlayer2, Colors.green, 'Player 2 Name')}
-                {renderInput(player3, setPlayer3, Colors.yellow, 'Player 3 Name')}
-                {renderInput(player4, setPlayer4, Colors.blue, 'Player 4 Name')}
+                <TextInput
+                    style={styles.input}
+                    placeholder="Player 1 Name"
+                    value={player1}
+                    onChangeText={setPlayer1}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Player 2 Name"
+                    value={player2}
+                    onChangeText={setPlayer2}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Player 3 Name"
+                    value={player3}
+                    onChangeText={setPlayer3}
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Player 4 Name"
+                    value={player4}
+                    onChangeText={setPlayer4}
+                />
                  <TouchableOpacity style={styles.button} onPress={handleStartGame}>
                     <Text style={styles.buttonText}>Start Game</Text>
                 </TouchableOpacity>

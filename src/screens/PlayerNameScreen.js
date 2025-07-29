@@ -7,7 +7,6 @@ import Wrapper from '../components/Wrapper';
 import { Colors } from '../constants/Colors';
 import { BackgroundImage } from '../helpers/GetIcons';
 import Back from '../assets/images/arrow.png';
-import GradientButton from '../components/GradientButton';
 
 const PlayerNameScreen = () => {
     const handleHome = () => {

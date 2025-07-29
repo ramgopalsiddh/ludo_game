@@ -58,6 +58,18 @@ const PlayerNameScreen = () => {
 };
 
 const styles = StyleSheet.create({
+    backButton: {
+        position: 'absolute',
+        top: 60,
+        left: 20,
+        zIndex: 1,
+    },
+    backIcon: {
+        width: 30,
+        height: 30,
+        resizeMode: 'contain',
+        transform: [{ rotate: '180deg' }]
+    },
     container: {
         flex: 1,
         justifyContent: 'center',

@@ -76,7 +76,7 @@ const Dice = React.memo(({ color, rotate, player, data }) => {
             } else {
                 // No valid move is possible with a 6, so pass the turn.
                 let chancePlayer = player + 1;
-                if (chancePlayer > 4) {
+                if (chancePlayer > playerNames.length) {
                     chancePlayer = 1;
                 }
                 await delay(600);
@@ -88,7 +88,7 @@ const Dice = React.memo(({ color, rotate, player, data }) => {
             if (openPiles.length === 0) {
                 // No pieces on board, pass turn
                 let chancePlayer = player + 1;
-                if (chancePlayer > 4) {
+                if (chancePlayer > playerNames.length) {
                     chancePlayer = 1;
                 }
                 await delay(600);
@@ -108,7 +108,7 @@ const Dice = React.memo(({ color, rotate, player, data }) => {
                 } else {
                     // No pieces can move (all are blocked), pass the turn
                     let chancePlayer = player + 1;
-                    if (chancePlayer > 4) {
+                    if (chancePlayer > playerNames.length) {
                         chancePlayer = 1;
                     }
                     await delay(600);

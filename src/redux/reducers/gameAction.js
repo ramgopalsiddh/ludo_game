@@ -1,6 +1,6 @@
 import { SafeSpots, StarSpots, startingPoints, turningPoints, victoryStart } from "../../helpers/PlotData";
 import { playSound } from "../../helpers/SoundUtility";
-import { selectCurrentPostions, selectDiceNo } from "./gameSelectors"
+import { selectCurrentPostions, selectDiceNo, selectPlayerNames } from "./gameSelectors"
 import { announceWinner, disableTouch, unfreezeDice, updateFireworks, updatePlayerChance, updatePlayerPiceValue } from "./gameSlice";
 
   // Promise for delay to show dice number
@@ -11,6 +11,7 @@ export const handleForwardThunk = (playerNo, id, pos) => async (dispatch, getSta
     const state = getState()
     const plottedPieces = selectCurrentPostions(state)
     const diceNo = selectDiceNo(state)
+    const playerNames = selectPlayerNames(state)
 
     let alpha = playerNo == 1 ? 'A' : playerNo == 2 ? 'B' : playerNo == 3 ? 'C' : 'D';
 
@@ -121,7 +122,7 @@ export const handleForwardThunk = (playerNo, id, pos) => async (dispatch, getSta
         }
     } else {
         let chancePlayer = playerNo + 1;
-        if (chancePlayer > 4) {
+        if (chancePlayer > playerNames.length) {
             chancePlayer=1
         }
         dispatch(updatePlayerChance({ chancePlayer }));

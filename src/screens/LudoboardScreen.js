@@ -10,13 +10,14 @@ import VerticalPath from '../components/VerticalPath';
 import { Plot1Data, Plot2Data, Plot3Data, Plot4Data } from '../helpers/PlotData';
 import HorizontalPath from '../components/HorizontalPath';
 import FourTriangles from '../components/FourTriangles';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectDiceTouch, selectPlayer1, selectPlayer2, selectPlayer3, selectPlayer4 } from '../redux/reducers/gameSelectors';
 import { useIsFocused } from '@react-navigation/native';
 import StartGame from '../assets/images/start.png'
 import MenuModal from '../components/MenuModal';
 import { playSound } from '../helpers/SoundUtility';
 import WinModal from '../components/WinModal';
+import { updateDiceNo, updatePlayerPiceValue, updatePlayerChance } from '../redux/reducers/gameSlice';
 
 const LudoboardScreen = () => {
 
@@ -26,8 +27,12 @@ const LudoboardScreen = () => {
   const player4 = useSelector(selectPlayer4);
   const isDiceTouch = useSelector(selectDiceTouch);
   const playerNames = useSelector(state => state.game.playerNames);
+  
+  const chancePlayer = useSelector(state => state.game.chancePlayer);
+  const diceNo = useSelector(state => state.game.diceNo);
   const winner = useSelector(state => state.game.winner);
   const isFocused = useIsFocused();
+  const dispatch = useDispatch();
 
   const [showStartImage, setShowStartImage] = useState(false)
   const [menuVisible, setMenuVisible] = useState(false)
@@ -75,14 +80,14 @@ const LudoboardScreen = () => {
 
       <View style={styles.container}>
         <View style={styles.flexRow} pointerEvents={isDiceTouch ? 'none' : 'auto' }>
-            <View style={styles.diceAndNameContainer}>
+            {playerNames.length > 1 && <View style={styles.diceAndNameContainer}>
               <Dice color={Colors.green} player={2} data={player2} />
               <Text style={styles.playerName}>{playerNames[1]}</Text>
-            </View>
-            <View style={styles.diceAndNameContainer}>
+            </View>}
+            {playerNames.length > 2 && <View style={styles.diceAndNameContainer}>
               <Dice color={Colors.yellow}  rotate player={3} data={player3} />
               <Text style={styles.playerName}>{playerNames[2]}</Text>
-            </View>
+            </View>}
         </View>
 
         <View style={styles.ludoBoard}>
@@ -115,10 +120,10 @@ const LudoboardScreen = () => {
               <Dice color={Colors.red} player={1} data={player1} />
               <Text style={styles.playerName}>{playerNames[0]}</Text>
             </View>
-            <View style={styles.diceAndNameContainer}>
+            {playerNames.length > 3 && <View style={styles.diceAndNameContainer}>
               <Dice color={Colors.blue}  rotate player={4} data={player4} />
               <Text style={styles.playerName}>{playerNames[3]}</Text>
-            </View>
+            </View>}
         </View>
 
       </View>

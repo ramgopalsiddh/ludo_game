@@ -26,6 +26,7 @@ const WinModal = ({ winner }) => {
         dispatch(resetGame());
         dispatch(announceWinner(null));
         playSound('game_start');
+        resetAndnavigate('PlayerNameScreen');
     };
 
     const handleHome = () => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import Modal from "react-native-modal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LinearGradient from "react-native-linear-gradient";
 import LottieView from "lottie-react-native";
 import GradientButton from "./GradientButton";
@@ -13,10 +13,12 @@ import { colorPlayer } from "../helpers/PlotData";
 import HeartGirl from '../assets/animation/girl.json';
 import Trophy from '../assets/animation/trophy.json';
 import Firework from '../assets/animation/firework.json';
+import { gamePlayer, selectPlayerNames } from "../redux/reducers/gameSelectors";
 
 const WinModal = ({ winner }) => {
     const dispatch = useDispatch();
     const [visible, setVisible] = useState(!!winner);
+    const players = useSelector(selectPlayerNames);
 
     useEffect(() => {
         setVisible(!!winner);
@@ -53,7 +55,7 @@ const WinModal = ({ winner }) => {
                         <Pile player={1} color={colorPlayer[winner - 1]} />
                     </View>
                     <Text style={styles.congratsText}>
-                        🥳 Congratulations! PLAYER {winner}
+                        🥳 Congratulations! {players[winner - 1]}
                     </Text>
                     <LottieView
                         autoPlay

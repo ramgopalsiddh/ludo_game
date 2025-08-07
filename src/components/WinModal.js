@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
         borderColor: 'gold',
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: -110,
     },
     content: {
         width: '100%',

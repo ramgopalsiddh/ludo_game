@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     height: deviceHeight * 0.2,
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 60,
+    marginVertical: 40,
     alignSelf: 'center',
   },
   img: {
